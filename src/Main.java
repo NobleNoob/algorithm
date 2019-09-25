@@ -54,7 +54,14 @@ public class Main {
     }
 
     public int removeLast(){
-        return del(size);
+        return del(size-1);
+    }
+
+    public void removeElement(int arg) {
+        int index = find(arg);
+        if(index !=-1 ) {
+            del(index);
+        }
     }
 
 
