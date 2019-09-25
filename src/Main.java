@@ -17,20 +17,20 @@ public class Main {
         return data.length;
     }
 
-    private void addLast(int arg) {
+    public void addLast(int arg) {
         add(size,arg);
     }
 
-    private void addFirst(int arg) {
+    public void addFirst(int arg) {
         add(0,arg);
     }
 
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         return size==0;
     }
 
-    private boolean contains(int arg) {
+    public boolean contains(int arg) {
         for(int i =0; i<size; i++) {
             if (data[i]==arg) {
                 return true;
@@ -39,7 +39,7 @@ public class Main {
         return false;
     }
 
-    private int find(int arg) {
+    public int find(int arg) {
         for(int i =0; i<size; i++) {
             if (data[i]==arg) {
                 return i;
@@ -49,26 +49,35 @@ public class Main {
     }
 
 
+    public int removeFirst() {
+        return del(0);
+    }
+
+    public int removeLast(){
+        return del(size);
+    }
 
 
-    private int findByIndex(int index) {
+    public int findByIndex(int index) {
         if(index <0 || index > size) {
             throw  new IllegalArgumentException("index is illegal");
         }
         return data[index];
     }
 
-    private void del(int index,int arg) {
+    public int del(int index) {
         if(index <0 || index > size) {
             throw  new IllegalArgumentException("index is illegal");
         }
-        for(int i = size -1 ; i >= index; i--){
+        int num = data[index];
+        for(int i = index +1 ; i < size; i++){
             data[i-1] = data[i];
         }
         size--;
+        return num;
     }
 
-    private void add(int index,int arg) {
+    public void add(int index,int arg) {
         if(size==getDataLength()) {
 //            this.resize();
 
