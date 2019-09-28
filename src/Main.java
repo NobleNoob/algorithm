@@ -1,13 +1,21 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import org.omg.CORBA.Object;
 
-public class Main {
+import java.util.Objects;
+
+public class Main<T> {
 
 
     private int size;
-    private int[] data;
+    private T[] data;
     private int capacity;
+
+    public Main(int capacity) {
+
+        this.capacity = capacity;
+        data = (T[])new Object[capacity];
+        size = 0;
+    }
+
 
     private int getSize() {
         return size;
@@ -17,11 +25,11 @@ public class Main {
         return data.length;
     }
 
-    public void addLast(int arg) {
+    public void addLast(T arg) {
         add(size,arg);
     }
 
-    public void addFirst(int arg) {
+    public void addFirst(T arg) {
         add(0,arg);
     }
 
@@ -30,18 +38,18 @@ public class Main {
         return size==0;
     }
 
-    public boolean contains(int arg) {
+    public boolean contains(T arg) {
         for(int i =0; i<size; i++) {
-            if (data[i]==arg) {
+            if (data[i].equals(arg)) {
                 return true;
             }
         }
         return false;
     }
 
-    public int find(int arg) {
+    public int find(T arg) {
         for(int i =0; i<size; i++) {
-            if (data[i]==arg) {
+            if (data[i].equals(arg)) {
                 return i;
             }
         }
@@ -49,15 +57,15 @@ public class Main {
     }
 
 
-    public int removeFirst() {
+    public T removeFirst() {
         return del(0);
     }
 
-    public int removeLast(){
+    public T removeLast(){
         return del(size-1);
     }
 
-    public void removeElement(int arg) {
+    public void removeElement(T arg) {
         int index = find(arg);
         if(index !=-1 ) {
             del(index);
@@ -65,30 +73,34 @@ public class Main {
     }
 
 
-    public int findByIndex(int index) {
+    public T findByIndex(int index) {
         if(index <0 || index > size) {
             throw  new IllegalArgumentException("index is illegal");
         }
         return data[index];
     }
 
-    public int del(int index) {
+    public T del(int index) {
         if(index <0 || index > size) {
             throw  new IllegalArgumentException("index is illegal");
         }
-        int num = data[index];
+        T num = data[index];
         for(int i = index +1 ; i < size; i++){
             data[i-1] = data[i];
         }
         size--;
+        data[size] = null;
+        if (size== data.length /2) {
+            resize(data.length/2);
+        }
         return num;
     }
 
-    public void add(int index,int arg) {
+    public void add(int index,T arg) {
         if(size==getDataLength()) {
-//            this.resize();
+            this.resize(2 * data.length);
 
-            throw new IllegalArgumentException("Array is full");
+//            throw new IllegalArgumentException("Array is full");
         }
         if(index <0 || index > size) {
             throw  new IllegalArgumentException("index is illegal");
@@ -102,21 +114,18 @@ public class Main {
         size++;
     }
 
-    private void resize() {
-        if(size==getDataLength()) {
-            data = new int[capacity*2];
+    private void resize(int capacity) {
+        T[] newData = (T[]) new Object[capacity];
+        for (int i = 0; i <size; i++) {
+            newData[i]= data[i];
+            data = newData;
         }
     }
 
-    private int[] getData() {
+    private T[] getData() {
         return data;
     }
 
-    public Main(int capacity) {
-
-        this.capacity = capacity;
-        data = new int[capacity];
-    }
 
     public Main() {
         this(20);
@@ -138,9 +147,9 @@ public class Main {
         return res.toString();
     }
 
-//Test function
+    //Test function
     public static void main(String[] args) {
-        Main main = new Main();
+        Main<Integer> main = new Main();
         for (int i= 0;i <=9;i++) {
             main.addLast(i);
         }
